@@ -13,6 +13,9 @@
 
 ### Firefox 版本
 
+从 Firefox 插件商店安装：[Tu-zi AI Chat Exporter](https://addons.mozilla.org/en-US/firefox/addon/tu-zi-ai-chat-exporter/)
+
+或手动安装：
 1. 下载 `chat-exporter` 目录下的文件
 2. 在 Firefox 地址栏输入：`about:debugging#/runtime/this-firefox`
 3. 点击"临时载入附加组件"
