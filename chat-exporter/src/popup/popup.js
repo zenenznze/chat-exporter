@@ -6,14 +6,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // 导出聊天记录
   exportBtn.addEventListener('click', async () => {
     try {
+      console.log('开始导出操作...');
       statusDiv.textContent = '正在导出...';
       exportBtn.disabled = true;
       
       // 获取当前标签页
+      console.log('开始获取标签页...');
       const tabs = await browser.tabs.query({active: true, currentWindow: true});
       if (!tabs || tabs.length === 0) {
         throw new Error('无法获取当前标签页');
       }
+      console.log('当前标签页:', tabs[0]);
       
       // 检查URL是否匹配
       const tab = tabs[0];
@@ -22,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       // 获取聊天记录
+      console.log('准备发送消息到content script...');
       const chatHistory = await browser.tabs.sendMessage(tab.id, {type: 'GET_CHAT_HISTORY'});
       console.log('获取到的聊天记录:', chatHistory);
       
@@ -50,27 +54,34 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       // 创建下载链接
+      console.log('准备下载文件...');
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
       const filename = `chat-history-${timestamp}.${fileExtension}`;
       
-      // 创建下载链接
-      const a = document.createElement('a');
+      // 使用传统下载方式
       const blob = new Blob([content], { 
         type: format === 'json' ? 'application/json' : 'text/markdown;charset=utf-8'
       });
-      a.href = URL.createObjectURL(blob);
+      
+      console.log('创建下载链接...');
+      const a = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      a.href = url;
       a.download = filename;
       
-      // 触发下载
+      // 添加到文档并触发点击
+      console.log('触发下载...');
       document.body.appendChild(a);
       a.click();
-      document.body.removeChild(a);
       
-      // 清理URL对象
+      // 清理
+      console.log('清理临时元素...');
       setTimeout(() => {
-        URL.revokeObjectURL(a.href);
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
       }, 100);
       
+      console.log('导出完成');
       statusDiv.textContent = '导出成功！';
       setTimeout(() => {
         statusDiv.textContent = '';

@@ -2,19 +2,21 @@
   "manifest_version": 2,
   "name": "AI Chat Exporter",
   "version": "1.0",
-  "description": "Export chat history from AI mirror sites",
+  "description": "Export AI chat history from tu-zi.com",
   "permissions": [
-    "activeTab",
+    "activeTab"
+  ],
+  "host_permissions": [
     "*://*.tu-zi.com/*"
   ],
+  "browser_action": {
+    "default_popup": "src/popup/popup.html"
+  },
   "content_scripts": [
     {
       "matches": ["*://*.tu-zi.com/*"],
       "js": ["src/content/content.js"],
-      "run_at": "document_end"
+      "run_at": "document_idle"
     }
-  ],
-  "browser_action": {
-    "default_popup": "src/popup/popup.html"
-  }
+  ]
 }

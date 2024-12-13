@@ -4,7 +4,9 @@
   "version": "1.0",
   "description": "Export AI chat history from tu-zi.com",
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "downloads",
+    "scripting"
   ],
   "host_permissions": [
     "*://*.tu-zi.com/*"
@@ -15,7 +17,8 @@
   "content_scripts": [
     {
       "matches": ["*://*.tu-zi.com/*"],
-      "js": ["src/content/content.js"]
+      "js": ["src/content/content.js"],
+      "run_at": "document_idle"
     }
   ]
 }

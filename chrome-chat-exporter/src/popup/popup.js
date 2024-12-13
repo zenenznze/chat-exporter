@@ -10,7 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
       exportBtn.disabled = true;
       
       // 获取当前标签页
+      console.log('开始获取标签页...');
       const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+      console.log('当前标签页:', tab);
       
       // 检查URL是否匹配
       if (!tab.url || !tab.url.includes('tu-zi.com')) {
@@ -18,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       // 获取聊天记录
+      console.log('准备发送消息到content script...');
       const response = await chrome.tabs.sendMessage(tab.id, {type: 'GET_CHAT_HISTORY'});
       console.log('获取到的聊天记录:', response);
       
@@ -59,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
       chrome.downloads.download({
         url: url,
         filename: filename,
-        saveAs: false
+        saveAs: true
       });
       
       // 清理URL对象

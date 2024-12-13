@@ -1,5 +1,9 @@
+// 内容脚本加载时的调试信息
+console.log('Content script 已加载');
+
 // 提取聊天记录
 function extractChatHistory() {
+  console.log('开始提取聊天记录...');
   const messages = [];
   
   try {
@@ -104,9 +108,12 @@ function extractChatHistory() {
 
 // 监听来自popup的消息
 browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log('收到消息:', message);
   if (message.type === 'GET_CHAT_HISTORY') {
+    console.log('开始处理GET_CHAT_HISTORY请求');
     const chatHistory = extractChatHistory();
+    console.log('提取到的聊天记录:', chatHistory);
     sendResponse(chatHistory);
+    return true; // 保持消息通道开放
   }
-  return true;
 });
